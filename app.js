@@ -5,7 +5,8 @@ var ws = require('ws');
 var app = express();
 
 var S = {
-  PORT: 5000
+    PORT: 80,
+    IP: "195.154.48.49"
 };
 
 var T = new Twit({
@@ -19,6 +20,7 @@ var clients = [];
 
 var stream = T.stream('statuses/filter', 
                       { track: [ '#PJLRenseignement', 
+				 "#LoiRenseignement",
                                  'terrorisme',
                                  'liberté',
                                  'vie privé',
@@ -45,8 +47,16 @@ app.get("/", function(req, res) {
 });
 
 var server = http.createServer(app);
-server.listen(S.PORT);
+server.listen(S.PORT, S.IP, function() {
 
+    if (process.getuid() === 0) {
+	process.setgid(1000);
+	process.setuid(1000);
+	if (process.getuid() !== 0) {
+            console.log("no root anymore...");
+	}
+    }     
+});
 
 var wss = new ws.Server({server: server});
 wss.on('connection', function(client) {

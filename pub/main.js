@@ -13,6 +13,8 @@ var keywords = [
   '#PJLRenseignement', 
   '#PJLrenseignement', 
   '#pjlrenseignement', 
+  '#LoiRenseignement',
+  '#loirenseignement',
   'terrorisme',
   'Terrorisme',
   'TERRORISME',
