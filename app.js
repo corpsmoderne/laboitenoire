@@ -31,12 +31,16 @@ stream.on('tweet', function (tweet) {
   //console.log(tweet);
 
   clients.forEach(function(client) {
-    client.send(JSON.stringify({ name:tweet.user.name,
-                                 screen_name: tweet.user.screen_name,
-                                 text:tweet.text,
-                                 id_str: tweet.id_str,
-                                 img: tweet.user.profile_image_url,
-                                 url: "https://twitter.com/"+tweet.user.screen_name+"/status/"+tweet.id_str}));
+    try {
+      client.send(JSON.stringify({ name:tweet.user.name,
+                                   screen_name: tweet.user.screen_name,
+                                   text:tweet.text,
+                                   id_str: tweet.id_str,
+                                   img: tweet.user.profile_image_url,
+                                   url: "https://twitter.com/"+tweet.user.screen_name+"/status/"+tweet.id_str}));
+    } catch(e) {
+      console.log(e);
+    }
   });
 })
 
@@ -81,7 +85,11 @@ wss.on('connection', function(client) {
     console.log(j);
     clients.forEach(function(c) {
       if (c !== client) {
-        c.send(data);
+        try {
+          c.send(data);
+        } catch(e) {
+          console.log(e);
+        }
       }
     });
   });
