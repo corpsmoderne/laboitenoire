@@ -203,9 +203,19 @@ $(document).ready(function() {
     var name = prompt("Veuillez decliner votre identité:");
     if (name.length == 0) {
       alert("L'anonymat est intedit!");
-    } else {
-      player.name = name;
+      return;
     }
+
+    for(var i=0; i < name.length; i++) {
+      var l = name[i];
+      if ("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-.0123456789".indexOf(l) === -1) {
+        alert("Nom interdit: caractères invalides");
+        return
+      }
+    }
+
+    player.name = name;
+
     $("#name").html(player.name);    
   });
 
