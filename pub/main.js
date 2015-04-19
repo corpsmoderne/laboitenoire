@@ -68,6 +68,9 @@ function update_ui() {
   }
   if (player.level >= 5) {
     $(".lstOutter").show(1000);
+    setTimeout(function() {
+      valls();
+    }, 2000);
   }
 }
 
@@ -316,5 +319,22 @@ function cazeneuve() {
       }, 2000);
     });
   }, (Math.random()*50000)+10000);
+}
+
+function valls() {
+  if ($("#valls").hasClass("flip")) {
+    $("#valls").animate({ right: 0}, 10000, function() {
+      $("#valls").removeClass("flip");
+      valls();
+    });
+  } else {
+    $("#valls").animate({ 
+      right: $(".lstOutter").width() - $("#valls").width()
+    }, 10000, function() {
+      $("#valls").addClass("flip");
+      valls();
+    });
+    
+  }
 }
 
