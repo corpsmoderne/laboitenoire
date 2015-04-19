@@ -1,4 +1,5 @@
 var player;
+var ws;
 
 function reset() {
   player = {
@@ -115,6 +116,7 @@ function report_tweet(j) {
     $("#"+j.id_str).remove();
     document.title = "("+$(".msg").length+") La Boîte Noire";
   });
+
 }
 
 function getLevelStr() {
@@ -129,6 +131,13 @@ function update_player() {
     
     update_ui();
     var elem = $("<div class='tweet' style='background:green;color: white;'>BRAVO PATRIOTE! TU PASSES AU NIVEAU D'ACCREDIATION SUPERIEUR: "+levels[player.level][0]+"</div>");
+
+    ws.send(JSON.stringify({ name:player.name, 
+                             pts:player.pts,
+                             level: player.level}));
+
+
+
     $(".tweetBox").append(elem);
   }
 }
@@ -194,9 +203,19 @@ $(document).ready(function() {
     var name = prompt("Veuillez decliner votre identité:");
     if (name.length == 0) {
       alert("L'anonymat est intedit!");
-    } else {
-      player.name = name;
+      return;
     }
+
+    for(var i=0; i < name.length; i++) {
+      var l = name[i];
+      if ("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-.0123456789".indexOf(l) === -1) {
+        alert("Nom interdit: caractères invalides");
+        return
+      }
+    }
+
+    player.name = name;
+
     $("#name").html(player.name);    
   });
 
@@ -217,7 +236,7 @@ $(document).ready(function() {
   function startWS() {
     var url = 'ws://' + window.document.location.host+window.document.location.pathname;
     
-    var ws = new WebSocket(url);
+    ws = new WebSocket(url);
     ws.onclose = function(){
       console.log("connection closed by host.");
       var elem = $("<div class='tweet alert-red'>DECONNEXION DU SERVEUR...RECONNEXION EN COURS...</div>");
@@ -237,7 +256,13 @@ $(document).ready(function() {
     
     ws.onmessage = function(event) {
       var j = JSON.parse(event.data);
-      //console.log(j);
+      if (j.level !== undefined) { // player message
+        console.log(j);
+        var elem = $("<div class='tweet notice'><b>"+j.name+"</b> à dénoncé "+j.pts+" traîtres et passe au niveau <b>"+levels[j.level][0]+"</b>.</div>");
+        $(".tweetBox").append(elem);
+        return;
+      }
+
       var txt = j.text;
       if (player.level >= 3) {
         keywords.forEach(function(kw) {

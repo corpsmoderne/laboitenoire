@@ -179,6 +179,10 @@ h1 {
     bottom: 0px;
 }
 
+.notice {
+    background: #eee;
+}
+
 .attrib {
     border: thin solid black;
     float: right;

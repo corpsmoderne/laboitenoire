@@ -69,7 +69,21 @@ wss.on('connection', function(client) {
 
   client.on("message", function(data) {
     var j = JSON.parse(data);
+
+    for(var i=0; i < j.name.length; i++) {
+      var l = j.name[i];
+      if ("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-.0123456789".indexOf(l) === -1) {
+        console.log("name invalid");
+        return
+      }
+    }
+
     console.log(j);
+    clients.forEach(function(c) {
+      if (c !== client) {
+        c.send(data);
+      }
+    });
   });
 
   client.on("close", function() {
