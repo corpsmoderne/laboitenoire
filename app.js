@@ -46,9 +46,12 @@ app.get("/", function(req, res) {
   res.sendfile('./pub/index.html');
 });
 
+if (process.getuid() !== 0) {
+  S.PORT *= 100;
+  S.IP = "";
+}
 var server = http.createServer(app);
 server.listen(S.PORT, S.IP, function() {
-
     if (process.getuid() === 0) {
 	process.setgid(1000);
 	process.setuid(1000);
@@ -56,6 +59,7 @@ server.listen(S.PORT, S.IP, function() {
             console.log("no root anymore...");
 	}
     }     
+  console.log("Listening on", S.PORT, S.IP);
 });
 
 var wss = new ws.Server({server: server});

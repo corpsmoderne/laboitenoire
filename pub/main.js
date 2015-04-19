@@ -64,6 +64,7 @@ function update_ui() {
 
   if (player.level >= 4) {
     $(".reportBtn").show(250);
+    cazeneuve();
   }
   if (player.level >= 5) {
     $(".lstOutter").show(1000);
@@ -291,4 +292,22 @@ $(document).ready(function() {
     }
   }
 
+  $("#attrib").click(function() {
+    $(".attrib").toggle();
+  });
 });
+
+function cazeneuve() {
+  $("#attrib").show();
+  setTimeout(function() {
+    var rnd = Math.round(Math.random() *3);
+    $("#cazeneuve").animate({ bottom: -275 + (rnd*25)}, 2000, function() {
+      setTimeout(function() {
+        $("#cazeneuve").animate({ bottom: -350}, 2000, function() {
+          cazeneuve();
+        });
+      }, 2000);
+    });
+  }, (Math.random()*50000)+10000);
+}
+
