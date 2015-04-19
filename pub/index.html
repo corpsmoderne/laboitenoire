@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <title>La Boîte Noire</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+    <script src="pub/jquery-1.11.2.min.js"></script>
+    <script src="pub/main.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="pub/style.css" />
+
+  </head>
+  <body>
+    <div class="content">
+      <div class="cocarde">
+        <div style="background: blue; height:1em;margin-bottom:1em"></div>
+        <div style="background: red; height:1em"></div>
+      </div>
+
+      <h1>La Boîte Noire</h1>
+    
+      <div class="player">
+        <span>Identité:</span> <a href="#" id="name"></a>
+        <br/>
+        <span>Dénonciations:</span> <span id="pts"></span>
+        <br/>
+        <span>Niveau d'accréditation:</span> <span id="level"></span>
+      </div>
+
+      <div class="tutorial">
+        <h3>Bienvenue, patriote!</h3>
+
+        <p>En attendant la mise en oeuvre des <b>boites noires</b> destinées à 
+          surveiller les activités suspectes sur Internet, la nation à 
+          besoin de toi!</p>
+
+        <p>La surveillance est déjà en place, mais le 
+          super-algo-magique-top-secret n'est pas encore 
+          tout à fait au point...</p>
+
+        <p>En attendant, c'est <b>TOI</b> l'algo.</b>
+
+        <p>Surveille le trafic réseau, et <b>dénonce</b> les propos
+          déviants.</p>
+
+        <button id="start">Commencer</button>
+      </div>
+
+      <div class="lstOutter">
+        <h2>Traîtres:</h2>
+        <div class="lstOutter2">
+          <div class="lstBox">
+          </div>
+        </div>
+      </div>
+
+      <div class="tweetOutter">
+        <div class="tweetBox"></div>
+        <div class="shadow"></div>
+      </div>
+
+      <div class="footer"><a href="#" id="reset">Reset</a> <span style="float:right">&copy; <a href="http://corpsmoderne.net" target="_blank">Marc Planard 2015</a> / <a href="https://twitter.com/corpsmoderne" target="_blank">@corpsmoderne</a></span></div>
+    </div>
+
+  </body>
+</html>

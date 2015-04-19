@@ -1,0 +1,205 @@
+*, *:before, *:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+body {
+    font-family: monospace;
+}
+
+.content {
+    //width: 50%;
+      width: 750px;
+      margin: 0 auto;
+}
+@media (max-width: 750px) {
+    .content {
+        width: 100%;
+    }
+}
+
+h1 {
+    text-align: right;
+}
+
+.tweetOutter {
+    border: thin solid black;
+    height: 100px;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+.tweetBox {
+    width:100%;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+}
+.shadow {
+    position: absolute;
+    width:110%;
+    top: -30px;
+    left: 0px;
+    height: 30px;
+    box-shadow: -10px 5px 30px 1px rgba(0, 0, 0, 0.5); 
+}
+
+.lstOutter {
+    border: thin solid black;
+    margin-bottom: 1em;
+}
+.lstOutter h2 {
+    margin: 0px;
+    padding: 0px;
+}
+
+.lstOutter2 {
+    height: 150px;
+    width: 100%;
+    overflow: auto;
+}
+
+.lstBox {
+    padding: 1em;
+    padding-top: 0px;
+}
+.lstBox a {
+}
+
+.tweet {
+    border: thin solid grey;
+    margin: 2px;
+    padding: 5px;
+    cursor: pointer;
+}
+.tweet img {
+    float: left;
+    margin-right: 5px;
+}
+.tweet button {
+    float: right;
+}
+
+.tname {
+    text-decoration: underline;
+}
+
+.reportBtn {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    font-size: large;
+}
+
+.alert {
+    background: red;
+}
+
+.popup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 400px;
+    height: 150px;
+    margin-left: -200px;
+    margin-top: -75px;
+    border: thick solid black;
+    background: white;
+    padding: 1em;
+    box-shadow: 0px 0px 40px 1px rgba(0, 0, 0, 1); 
+}
+@media (max-width: 400px) {
+    .popup {
+        position: fixed;
+        width: 100%;
+        left: 0px;
+        bottom: 0px;
+        margin: 0px;
+        border: none;
+        border: thick solid black;
+    }
+}
+
+
+.popup img {
+    float: left;
+    margin-right: 5px;
+}
+
+.player {
+    border: thin solid black;
+    padding: 1em;
+    margin-bottom: 1em;
+    background: white;
+}
+
+.cocarde {
+    z-index: -5;
+    position: absolute;
+    top: 0px;
+    left: -3em;
+    width: 10em;
+    font-size: 2em;
+    transform: rotate(-45deg);
+}
+.cocarde div {
+    box-shadow: 4px 4px 10px 1px rgba(0, 0, 0, 0.75); 
+}
+.alert-green {
+    color:green;
+    text-align:center;
+}
+.alert-red {
+    color:red;
+    text-align:center;
+}
+
+.footer {
+    font-size: x-small;
+    margin: 0.25em;
+}
+
+.tutorial {
+    border: thin solid black;
+    padding: 1em;
+}
+
+
+.loading
+{
+animation-name: myfirst;
+animation-duration: 1s;
+animation-timing-function: linear;
+animation-iteration-count: infinite;
+animation-play-state: running;
+/* Firefox: */
+-moz-animation-name: myfirst;
+-moz-animation-duration: 1s;
+-moz-animation-timing-function: linear;
+-moz-animation-iteration-count: infinite;
+-moz-animation-play-state: running;
+/* Safari and Chrome: */
+-webkit-animation-name: myfirst;
+-webkit-animation-duration: 1s;
+-webkit-animation-timing-function: linear;
+-webkit-animation-iteration-count: infinite;
+-webkit-animation-play-state: running;
+}
+@keyframes myfirst
+{
+from {transform:rotate(0deg);}
+to {transform:rotate(360deg);}
+}
+ 
+@-moz-keyframes myfirst /* Firefox */
+{
+from {-moz-transform:rotate(0deg);}
+to {-moz-transform:rotate(360deg);}
+}
+ 
+@-webkit-keyframes myfirst /* Safari and Chrome */
+{
+from {-webkit-transform:rotate(0deg);}
+to {-webkit-transform:rotate(360deg);}
+}
