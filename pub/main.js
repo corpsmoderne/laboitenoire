@@ -295,6 +295,13 @@ $(document).ready(function() {
   $("#attrib").click(function() {
     $(".attrib").toggle();
   });
+
+  $("#cazeneuve").click(function() {
+    $("#cazeneuve").stop();
+    $("#cazeneuve").animate({ bottom: -350}, 250, function() {
+    });
+  });
+
 });
 
 function cazeneuve() {
