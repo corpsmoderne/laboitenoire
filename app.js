@@ -70,6 +70,11 @@ wss.on('connection', function(client) {
   client.on("message", function(data) {
     var j = JSON.parse(data);
     console.log(j);
+    clients.forEach(function(c) {
+      if (c !== client) {
+        c.send(data);
+      }
+    });
   });
 
   client.on("close", function() {
