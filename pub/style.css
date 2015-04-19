@@ -170,7 +170,7 @@ h1 {
 #cazeneuve {
     position: fixed;
     bottom: -350px;
-    right: 50px;
+    right: 10%;
 }
 
 #valls {
@@ -195,6 +195,7 @@ img.flip {
 }
 
 .share {
+    font-size: xx-small;
     text-align: right;
     float: right;
     height: 100%;
