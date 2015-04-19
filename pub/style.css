@@ -49,6 +49,7 @@ h1 {
     position: relative;
     border: thin solid black;
     margin-bottom: 1em;
+    background: white;
 }
 .lstOutter h2 {
     margin: 0px;
@@ -191,6 +192,13 @@ img.flip {
   -webkit-transform: scaleX(-1); /* webkit */
   transform: scaleX(-1);         /* standard */
   filter: FlipH;                 /* IE 6/7/8 */
+}
+
+.share {
+    text-align: right;
+    float: right;
+    height: 100%;
+    width: 200px;
 }
 
 .loading
