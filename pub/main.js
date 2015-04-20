@@ -233,6 +233,24 @@ $(document).ready(function() {
     });
   });
 
+  function notice(msg) {
+    var elem = $("<div class='tweet notice'><a class='close' href='#'>X</a>"+msg+"</div>");
+    elem.find(".close").click(function(e) {
+      e.preventDefault();
+      elem.hide(250, function() {
+        elem.remove();
+      });
+    });
+    $(".tweetBox").append(elem);
+  }
+  
+  function share() {
+    setTimeout(function() {
+      notice('<b>Partage ou tu es un traître!</b> <a href="http://www.twitter.com/share?url=http%3A%2F%2Flaboitenoire.corpsmoderne.net%2F" target="_blank">Twitter</a> <a href="http://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flaboitenoire.corpsmoderne.net%2F" target="_blank">Facebook</a>');
+      share();
+    }, 60000+(Math.random()*3*60000));
+  }
+
   function startWS() {
     var url = 'ws://' + window.document.location.host+window.document.location.pathname;
     
@@ -254,24 +272,6 @@ $(document).ready(function() {
       $(".tweetBox").append(elem2);
     };
     
-    function notice(msg) {
-      var elem = $("<div class='tweet notice'><a class='close' href='#'>X</a>"+msg+"</div>");
-      elem.find(".close").click(function(e) {
-        e.preventDefault();
-        elem.hide(250, function() {
-          elem.remove();
-        });
-      });
-      $(".tweetBox").append(elem);
-    }
-
-    function share() {
-      setTimeout(function() {
-        notice('<b>Partage ou tu es un traître!</b> <a href="http://www.twitter.com/share?url=http%3A%2F%2Flaboitenoire.corpsmoderne.net%2F" target="_blank">Twitter</a> <a href="http://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flaboitenoire.corpsmoderne.net%2F" target="_blank">Facebook</a>');
-        share();
-      }, 60000+(Math.random()*3*60000));
-    }
-
     ws.onmessage = function(event) {
       var j = JSON.parse(event.data);
       if (j.level !== undefined) { // player message
