@@ -66,10 +66,21 @@ server.listen(S.PORT, S.IP, function() {
   console.log("Listening on", S.PORT, S.IP);
 });
 
+var max = 0;
+function log() {
+  max = Math.max(max, clients.length);
+  var txt = "["+clients.length+"/"+max+"] ";
+  for (e in arguments) {
+    txt += arguments[e] + " ";
+  }
+  console.log(txt);
+}
+
 var wss = new ws.Server({server: server});
 wss.on('connection', function(client) {
   clients.push(client);
-  console.log("client", clients.indexOf(client), "connected");
+  var ip = client._socket.address().address;
+  log("new client connected from", ip);
 
   client.on("message", function(data) {
     var j = JSON.parse(data);
@@ -82,7 +93,7 @@ wss.on('connection', function(client) {
       }
     }
 
-    console.log(j);
+    log(data);
     clients.forEach(function(c) {
       if (c !== client) {
         try {
@@ -96,9 +107,8 @@ wss.on('connection', function(client) {
 
   client.on("close", function() {
     var id = clients.indexOf(client);
-    console.log("client", id, "disconnected");    
     clients.splice(id, 1);
-    console.log(clients.length);
+    log("client", id, "disconnected from", ip);
   });
   
 });
