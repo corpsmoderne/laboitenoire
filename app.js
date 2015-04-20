@@ -22,6 +22,8 @@ var T = new Twit({
 
 var clients = [];
 
+var ips = {};
+
 var stream = T.stream('statuses/filter', 
                       { track: [ '#PJLRenseignement', 
 				 "#LoiRenseignement",
@@ -86,6 +88,22 @@ var wss = new ws.Server({server: server});
 wss.on('connection', function(client) {
   clients.push(client);
   var ip = client._socket.remoteAddress;
+
+  if (ip) {
+    if (ips[ip]) {
+      ips[ip]++;
+      if (ips[ip] > 20) {
+        var id = clients.indexOf(client);
+        clients.splice(id, 1);
+        client.close();
+        log("client rejected, too many connexions");
+        return;
+      }
+    } else {
+      ips[ip] = 1;
+    }
+  }
+
   log("new client connected from", ip);
 
   client.send(JSON.stringify({ version: version })); 
@@ -115,6 +133,10 @@ wss.on('connection', function(client) {
 
   client.on("close", function() {
     var id = clients.indexOf(client);
+    if (ip) {
+      ips[ip]--;
+    }
+
     clients.splice(id, 1);
     log("client", id, "disconnected from", ip);
   });
