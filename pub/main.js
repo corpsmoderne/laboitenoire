@@ -253,8 +253,19 @@ $(document).ready(function() {
 
   function startWS() {
     var url = 'ws://' + window.document.location.host+window.document.location.pathname;
-    
-    ws = new WebSocket(url);
+
+    try {
+      ws = new WebSocket(url);
+    } catch(e) {
+      $(".waiter").hide(250, function() {
+        $(".waiter").remove();
+      });
+      
+      notice("<b>Ce navigateur est trop vieux pour dénoncer efficacement!</b> Essaye avec <a target='_blank' href='https://www.google.fr/chrome/browser/desktop/'>Chrome</a> ou <a target='_blank' href='https://www.mozilla.org/fr/firefox/new/'>Firefox</a>, les navigateurs des vrais patriotes!");
+      return;
+    }
+
+
     ws.onclose = function(){
       console.log("connection closed by host.");
       var elem = $("<div class='tweet alert-red'>DECONNEXION DU SERVEUR...RECONNEXION EN COURS...</div>");
