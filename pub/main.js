@@ -285,6 +285,13 @@ $(document).ready(function() {
       return;
     }
 
+    if (ws) {
+      try {
+        ws.close();
+      } catch(e) {
+      }
+    }
+
     var url = 'ws://' + window.document.location.host+window.document.location.pathname;
 
     try {
