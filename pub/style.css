@@ -190,6 +190,9 @@ h1 {
     border: thin solid black;
     float: right;
     padding: 1em;
+    margin-top: 1em;
+    width: 100%;
+    text-align: right;
     display: none;
 }
 
