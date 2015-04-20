@@ -191,6 +191,29 @@ $(document).ready(function() {
     startWS();
   }
 
+  var stopNet=false;
+  function checkHidden() {
+    if (document.hidden === true && stopNet === false) {
+      console.log("checking in 10 s...");
+      setTimeout(function() {
+        if (document.hidden === true) {
+          console.log("stop net...");
+          stopNet = true;
+          ws.close();
+          checkHidden();
+        }
+      }, 30000);
+    } else {
+      if (document.hidden === false && stopNet === true) {
+        console.log("restart net");
+        stopNet = false;
+        startWS();
+      }
+      setTimeout(checkHidden, 1000);
+    }
+  }
+  checkHidden();
+
   setInterval(function() {
     localStorage['player'] = JSON.stringify(player);
   }, 1000);
@@ -257,6 +280,10 @@ $(document).ready(function() {
   }
 
   function startWS() {
+    if (stopNet === true) {
+      return;
+    }
+
     var url = 'ws://' + window.document.location.host+window.document.location.pathname;
 
     try {
@@ -272,12 +299,17 @@ $(document).ready(function() {
 
 
     ws.onclose = function(){
-      console.log("connection closed by host.");
-      var elem = $("<div class='tweet alert-red'>DECONNEXION DU SERVEUR...RECONNEXION EN COURS...</div>");
-      $(".tweetBox").append(elem);
-      setTimeout(function() {
-        startWS();
-      }, 1000);
+      if (stopNet === true) {
+        var elem = $("<div class='tweet alert-red'>DECONNEXION DU SERVEUR POUR INACTIVITE...</div>");
+        $(".tweetBox").append(elem);
+      } else {
+        console.log("connection closed by host.");
+        var elem = $("<div class='tweet alert-red'>DECONNEXION DU SERVEUR...RECONNEXION EN COURS...</div>");
+        $(".tweetBox").append(elem);
+        setTimeout(function() {
+          startWS();
+        }, 1000);
+      }
     };
     
     ws.onopen = function(event) {
@@ -431,6 +463,7 @@ function cazeneuve() {
       }, 2000);
     });
   }, (Math.random()*50000)+10000);
+
 }
 
 function valls() {
