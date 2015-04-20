@@ -79,7 +79,7 @@ function update_lst() {
   $(".lstBox").empty();
   for(var e in player.lst) {
     var i = player.lst[e];
-    var s = 8 + (i*i);
+    var s = 8 + (i*2);
     var col = "white";
     if (i > 1) {
       col = "orange";
