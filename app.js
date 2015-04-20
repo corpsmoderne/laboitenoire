@@ -31,13 +31,15 @@ stream.on('tweet', function (tweet) {
   //console.log(tweet);
 
   clients.forEach(function(client) {
+    var data = JSON.stringify({ 
+      name:tweet.user.name,
+      screen_name: tweet.user.screen_name,
+      text:tweet.text,
+      id_str: tweet.id_str,
+      img: tweet.user.profile_image_url,
+      url: "https://twitter.com/"+tweet.user.screen_name+"/status/"+tweet.id_str});
     try {
-      client.send(JSON.stringify({ name:tweet.user.name,
-                                   screen_name: tweet.user.screen_name,
-                                   text:tweet.text,
-                                   id_str: tweet.id_str,
-                                   img: tweet.user.profile_image_url,
-                                   url: "https://twitter.com/"+tweet.user.screen_name+"/status/"+tweet.id_str}));
+      client.send(data);
     } catch(e) {
       console.log(e);
     }
@@ -79,7 +81,7 @@ function log() {
 var wss = new ws.Server({server: server});
 wss.on('connection', function(client) {
   clients.push(client);
-  var ip = client._socket.address().address;
+  var ip = client._socket.remoteAddress;
   log("new client connected from", ip);
 
   client.on("message", function(data) {
