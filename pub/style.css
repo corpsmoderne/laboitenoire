@@ -182,6 +182,9 @@ h1 {
 .notice {
     background: #eee;
 }
+.close {
+    float: right;
+}
 
 .attrib {
     border: thin solid black;

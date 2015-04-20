@@ -220,7 +220,7 @@ $(document).ready(function() {
   });
 
   $("#reset").click(function() {
-    if (confirm("Recommancer de zero?")) {
+    if (confirm("Recommencer de zéro?")) {
       delete localStorage['player'];
       document.location.reload();
     }
@@ -254,12 +254,30 @@ $(document).ready(function() {
       $(".tweetBox").append(elem2);
     };
     
+    function notice(msg) {
+      var elem = $("<div class='tweet notice'><a class='close' href='#'>X</a>"+msg+"</div>");
+      elem.find(".close").click(function(e) {
+        e.preventDefault();
+        elem.hide(250, function() {
+          elem.remove();
+        });
+      });
+      $(".tweetBox").append(elem);
+    }
+
+    function share() {
+      setTimeout(function() {
+        notice('<b>Partage ou tu es un traître!</b> <a href="http://www.twitter.com/share?url=http%3A%2F%2Flaboitenoire.corpsmoderne.net%2F" target="_blank">Twitter</a> <a href="http://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flaboitenoire.corpsmoderne.net%2F" target="_blank">Facebook</a>');
+        share();
+      }, 60000+(Math.random()*3*60000));
+    }
+    share();
+
     ws.onmessage = function(event) {
       var j = JSON.parse(event.data);
       if (j.level !== undefined) { // player message
         console.log(j);
-        var elem = $("<div class='tweet notice'><b>"+j.name+"</b> à dénoncé "+j.pts+" traîtres et passe au niveau <b>"+levels[j.level][0]+"</b>.</div>");
-        $(".tweetBox").append(elem);
+        notice("<b>"+j.name+"</b> à dénoncé "+j.pts+" traîtres et passe au niveau <b>"+levels[j.level][0]+"</b>.");
         return;
       }
 
