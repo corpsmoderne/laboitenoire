@@ -49,6 +49,7 @@ function autoReport() {
   }
 }
 
+var pigeonStarted = false;
 function update_ui() {
   if (player.level >= levels.length-1) {
     $(".tweetOutter").animate({ height: 200}, 1000);
@@ -62,7 +63,9 @@ function update_ui() {
   if (player.level >= 2) {
     $(".tweet img").show(250);
   }
-
+  if (player.level >= 3 && pigeonStarted === false) {
+    pigeon();
+  }
   if (player.level >= 4) {
     $(".reportBtn").show(250);
     cazeneuve();
@@ -80,6 +83,8 @@ function update_lst() {
   for(var e in player.lst) {
     var i = player.lst[e];
     var s = 8 + (i*2);
+    s = Math.min(s, 42);
+
     var col = "white";
     if (i > 1) {
       col = "orange";
@@ -360,7 +365,59 @@ $(document).ready(function() {
 
   share();
 
+  // pigeon flap flap
+  var flap = true;
+  $("#pigeon2").hide();
+  setInterval(function() {
+    if (flap) {
+      $("#pigeon1").hide();
+      $("#pigeon2").show();
+    } else {
+      $("#pigeon2").hide();
+      $("#pigeon1").show();
+    }
+    flap = !flap;
+  }, 1000);
+  
+  $(".pigeon").click(function() {
+    report_tweet({ screen_name: "nitot", id_str: "pigeon"+Math.random()});
+
+    $(".pigeon").stop();
+    $(".pigeon").addClass("dead");
+    $(".pigeon").animate({ top: $(document).height() + 100 }, 
+                         2000, function() {
+                           $(".pigeon").removeClass("dead");
+                           pigeon();
+                         });
+  });
 });
+
+function pigeon() {
+  if ($(".pigeon").hasClass("dead")) {
+    return;
+  }
+  pigeonStarted = true;
+  setTimeout(function() {
+    var y = ($(document).height() * Math.random()) - ($(".pigeon").height()/2);
+    var from = -$(".pigeon").width();
+    var to = $(document).width() + $(".pigeon").width();
+    var speed = to*5;
+
+    if (Math.random() > 0.5) {
+      var tmp = to;
+      to = from;
+      from = tmp;
+    }
+
+    $(".pigeon").css("top", y);
+    $(".pigeon").css("left", from);
+    
+    $(".pigeon").animate({ "left": to}, speed, "linear", function() {
+      pigeon();
+    });
+
+  }, 60000 * Math.random());
+}
 
 function cazeneuve() {
   $("#attrib").show();

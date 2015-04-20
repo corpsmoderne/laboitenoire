@@ -193,6 +193,13 @@ h1 {
     display: none;
 }
 
+.pigeon {
+    position: fixed;
+    top: -100px;
+    left: -100px;
+    height: 39px;
+}
+
 img.flip {
   -moz-transform: scaleX(-1);    /* Gecko */
   -o-transform: scaleX(-1);      /* Operah */
@@ -207,6 +214,26 @@ img.flip {
     float: right;
     height: 100%;
     width: 200px;
+}
+
+.dead {
+animation-name: myfirst;
+animation-duration: 1s;
+animation-timing-function: linear;
+animation-iteration-count: infinite;
+animation-play-state: running;
+/* Firefox: */
+-moz-animation-name: myfirst;
+-moz-animation-duration: 1s;
+-moz-animation-timing-function: linear;
+-moz-animation-iteration-count: infinite;
+-moz-animation-play-state: running;
+/* Safari and Chrome: */
+-webkit-animation-name: myfirst;
+-webkit-animation-duration: 1s;
+-webkit-animation-timing-function: linear;
+-webkit-animation-iteration-count: infinite;
+-webkit-animation-play-state: running;
 }
 
 .loading
