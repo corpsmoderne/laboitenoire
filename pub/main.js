@@ -1,5 +1,6 @@
 var player;
 var ws;
+var version;
 
 function reset() {
   player = {
@@ -297,7 +298,6 @@ $(document).ready(function() {
       return;
     }
 
-
     ws.onclose = function(){
       if (stopNet === true) {
         var elem = $("<div class='tweet alert-red'>DECONNEXION DU SERVEUR POUR INACTIVITE...</div>");
@@ -322,6 +322,16 @@ $(document).ready(function() {
     
     ws.onmessage = function(event) {
       var j = JSON.parse(event.data);
+
+      if (j.version) {
+        if (version === undefined) {
+          version = j.version;
+        } else {
+          document.location.reload();
+        }
+        return;
+      }
+
       if (j.level !== undefined) { // player message
         console.log(j);
         notice("<b>"+j.name+"</b> à dénoncé "+j.pts+" traîtres et passe au niveau <b>"+levels[j.level][0]+"</b>.");

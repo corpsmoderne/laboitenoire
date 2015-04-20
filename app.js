@@ -9,6 +9,10 @@ var S = {
     IP: "195.154.48.49"
 };
 
+var version = Math.round(Math.random()*65535).toString(16);
+
+console.log("Version:", version);
+
 var T = new Twit({
     consumer_key:         'zgIdJmHhhEdyk66dzMDvj7vo9'
   , consumer_secret:      'NJbfbSYPT9FZyvpreAKZP3G5CXwliLW053PpYNRmhQA5EgMW07'
@@ -84,6 +88,8 @@ wss.on('connection', function(client) {
   var ip = client._socket.remoteAddress;
   log("new client connected from", ip);
 
+  client.send(JSON.stringify({ version: version })); 
+  
   client.on("message", function(data) {
     var j = JSON.parse(data);
 
