@@ -271,7 +271,6 @@ $(document).ready(function() {
         share();
       }, 60000+(Math.random()*3*60000));
     }
-    share();
 
     ws.onmessage = function(event) {
       var j = JSON.parse(event.data);
@@ -347,6 +346,8 @@ $(document).ready(function() {
     $("#cazeneuve").animate({ bottom: -350}, 250, function() {
     });
   });
+
+  share();
 
 });
 
