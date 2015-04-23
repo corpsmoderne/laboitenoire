@@ -31,13 +31,13 @@ var keywords = [
 ];
 
 var levels = [
-  [ "suspect", 5 ],       // 0
-  [ "informateur", 15],   // 1
-  [ "agent spécial", 50], // 2
-  [ "député", 100],       // 3
-  [ "Cazeneuve", 250],    // 4
-  [ "Valls", 500],        // 5
-  [ "Dark Vador", 65535 ]
+  [ T.suspect, 5 ],       // 0
+  [ T.informant, 15],   // 1
+  [ T.agent, 50], // 2
+  [ T.delegate, 100],       // 3
+  [ T.cazeneuve, 250],    // 4
+  [ T.valls, 500],        // 5
+  [ T.darthVador, 65535 ]
 ];
 
 function autoReport() {

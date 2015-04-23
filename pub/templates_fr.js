@@ -12,5 +12,14 @@ var T = {
   conEstablished: "<div class='tweet alert-green'>CONNEXION AU SERVEUR DE SURVEILLANCE ETABLIE</div>",
   awaitingMsg: "<div class='tweet waiter'>En attente de messages... <span class='loading'>|</span></div>",
   userReport : "<b>{{name}}</b> à dénoncé {{pts}} traîtres et passe au niveau <b>{{level}}</b>.",
-  reportBtn: "<button class='reportBtn'>Dénoncer</button>" 
+  reportBtn: "<button class='reportBtn'>Dénoncer</button>",
+
+  suspect: "suspect",
+  informant: "informateur",
+  agent: "agent spécial",
+  delegate: "député",
+  cazeneuve: "Cazeneuve",
+  valls: "Valls",
+  darthVador: "Dark Vador"
+ 
 };
