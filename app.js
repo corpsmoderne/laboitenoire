@@ -89,8 +89,6 @@ app.get("/getTweets", function(req, res) {
   res.send(JSON.stringify(lst.concat(tweets)));
 });
 
-
-
 if (process.getuid() !== 0) {
   S.PORT *= 100;
   S.IP = "";
@@ -150,6 +148,11 @@ wss.on('connection', function(client) {
         console.log("name invalid");
         return
       }
+    }
+
+    tweets.push(j);
+    if (tweets.length > 20) {
+      tweets.shift();
     }
 
     log(data);

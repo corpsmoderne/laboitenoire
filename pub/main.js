@@ -294,7 +294,6 @@ $(document).ready(function() {
     }
     
     if (j.level !== undefined) { // player message
-      console.log(j);
       notice(Mustache.render(T.userReport, {name:j.name, pts:j.pts, level:levels[j.level][0]}));
       return;
     }
@@ -446,7 +445,9 @@ $(document).ready(function() {
   });
 
   function checkFallback() {
+    console.log("checkFallback");
     setTimeout(function() {
+      console.log(version);
       if (version === undefined) {
         console.log("WebSocket not working, fall back on AJAX...");
         fallBack = true;
