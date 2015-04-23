@@ -78,7 +78,7 @@ app.get("/fr*", function(req, res) {
 
 app.get("/en*", function(req, res) {
   console.log("lang:", req.headers["accept-language"]);
-  res.sendfile('./pub/index.html');
+  res.sendfile('./pub/index_en.html');
 });
 
 app.get("/getTweets", function(req, res) {

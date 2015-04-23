@@ -321,6 +321,7 @@ $(document).ready(function() {
     });
     
     var report = $(T.reportBtn);
+
     report.click(function() {
       report_tweet(j);
     });
@@ -371,8 +372,6 @@ $(document).ready(function() {
       $(".waiter").hide(250, function() {
         $(".waiter").remove();
       });
-      
-      notice(T.broserTooOld);
       return;
     }
 

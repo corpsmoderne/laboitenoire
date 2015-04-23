@@ -7,11 +7,10 @@ var T = {
   invalidName: "Nom interdit: caractères invalides",
   restart: "Recommencer de zéro?",
   shareOrTraitor: '<b>Partage ou tu es un traître!</b> <a href="http://www.twitter.com/share?url=http%3A%2F%2Flaboitenoire.corpsmoderne.net%2F" target="_blank">Twitter</a> <a href="http://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flaboitenoire.corpsmoderne.net%2F" target="_blank">Facebook</a>',
-  browserTooOld: "<b>Ce navigateur est trop vieux pour dénoncer efficacement!</b> Essaye avec <a target='_blank' href='https://www.google.fr/chrome/browser/desktop/'>Chrome</a> ou <a target='_blank' href='https://www.mozilla.org/fr/firefox/new/'>Firefox</a>, les navigateurs des vrais patriotes!",
   inactive: "<div class='tweet alert-red'>DECONNEXION DU SERVEUR POUR INACTIVITE...</div>",
   conClosed: "<div class='tweet alert-red'>DECONNEXION DU SERVEUR...RECONNEXION EN COURS...</div>",
   conEstablished: "<div class='tweet alert-green'>CONNEXION AU SERVEUR DE SURVEILLANCE ETABLIE</div>",
   awaitingMsg: "<div class='tweet waiter'>En attente de messages... <span class='loading'>|</span></div>",
   userReport : "<b>{{name}}</b> à dénoncé {{pts}} traîtres et passe au niveau <b>{{level}}</b>.",
-  retportBtn: "<div style='position:relative;'></div>" 
+  reportBtn: "<button class='reportBtn'>Dénoncer</button>" 
 };
