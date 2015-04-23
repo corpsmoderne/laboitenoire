@@ -30,9 +30,10 @@ try {
                         { track: [ '#PJLRenseignement', 
 				   "#LoiRenseignement",
                                    'terrorisme',
+                                   'terroriste',
                                    'liberté',
                                    'vie privé',
-                                   "droits de l'homme"]
+                                   'attentat']
                         });
 } catch(e) {
   console.log("Unable to connect to twitter", e);
