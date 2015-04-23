@@ -67,7 +67,7 @@ stream.on('tweet', function (tweet) {
 app.use("/pub", express.static(__dirname + '/pub'));
 
 app.get("/", function(req, res) {
-  console.log("lang": req.headers["accept-language"]);
+  console.log("lang", req.headers["accept-language"]);
   res.sendfile('./pub/index.html');
 });
 
