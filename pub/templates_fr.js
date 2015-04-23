@@ -20,6 +20,7 @@ var T = {
   delegate: "député",
   cazeneuve: "Cazeneuve",
   valls: "Valls",
-  darthVador: "Dark Vador"
- 
+  darthVador: "Dark Vador",
+
+  patriot: "Patriote"
 };

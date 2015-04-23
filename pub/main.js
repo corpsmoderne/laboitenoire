@@ -4,7 +4,7 @@ var version;
 
 function reset() {
   player = {
-    name: "Patriote-"+Math.round(Math.random()*65535).toString(16),
+    name: T.patriot+"-"+Math.round(Math.random()*65535).toString(16),
     pts: 0,
     level: 0,
     lst: {}
