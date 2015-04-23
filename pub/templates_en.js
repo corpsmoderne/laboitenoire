@@ -11,7 +11,7 @@ var T = {
   conClosed: "<div class='tweet alert-red'>CONNECTION CLOSED...TRYING TO RECONNECT...</div>",
   conEstablished: "<div class='tweet alert-green'>CONNECTION TO THE MONITORING SERVER ESTABLISHED</div>",
   awaitingMsg: "<div class='tweet waiter'>Awaiting messages... <span class='loading'>|</span></div>",
-  userReport : "<b>{{name}}</b> has reported {{pts}} traitors and reach level: <b>{{level}}</b>.",
+  userReport : "<b>{{name}}</b> has reported {{pts}} traitors and reaches level: <b>{{level}}</b>.",
   reportBtn: "<button class='reportBtn'>Report</button>",
 
   suspect: "suspect",
