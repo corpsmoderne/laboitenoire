@@ -20,7 +20,7 @@ var T = {
   delegate: "delegate",
   cazeneuve: "Cazeneuve",
   valls: "Valls",
-  darthVador: "Darth Vador",
+  darthVador: "Darth Vader",
  
   patriot: "Patriot"
 };
