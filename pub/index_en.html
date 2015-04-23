@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <title>La Boîte Noire</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+    <script src="/pub/jquery-1.11.2.min.js"></script>
+    <script src="/pub/mustache.js"></script>
+    <script src="/pub/templates_fr.js"></script>
+    <script src="/pub/main.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="/pub/style.css" />
+
+  </head>
+  <body>
+    <img src="/pub/LaBoiteNoire.png" alt="Logo La Boite Noire" style="display:none"/>
+    <div class="content">
+      <div class="cocarde">
+        <div style="background: blue; height:1em;margin-bottom:1em"></div>
+        <div style="background: red; height:1em"></div>
+      </div>
+
+      <h1>La Boîte Noire</h1>
+    
+      <div class="player">
+        <div class="share">
+          <div>Partage ou tu es un traître!</div>
+          <a href="http://www.twitter.com/share?url=http%3A%2F%2Flaboitenoire.corpsmoderne.net%2F" target="_blank">Twitter</a> 
+          <a href="http://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flaboitenoire.corpsmoderne.net%2F" target="_blank">Facebook</a> 
+        </div>
+
+        <span>Identité:</span> <a href="#" id="name"></a>
+        <br/>
+        <span>Dénonciations:</span> <span id="pts"></span>
+        <br/>
+        <span>Niveau d'accréditation:</span> <span id="level"></span>
+      </div>
+
+      <div class="tutorial">
+        <h3>Bienvenue, patriote!</h3>
+
+        <p>En attendant la mise en oeuvre des <b>boites noires</b> destinées à 
+          surveiller les activités suspectes sur Internet, la nation a 
+          besoin de toi!</p>
+
+        <p>La surveillance est déjà en place, mais le 
+          super-algo-magique-top-secret n'est pas encore 
+          tout à fait au point...</p>
+
+        <p>En attendant, c'est <b>TOI</b> l'algo.</b>
+
+        <p>Surveille le trafic réseau, et <b>dénonce</b> les propos
+          déviants.</p>
+
+        <button id="start">Commencer</button>
+      </div>
+
+      <div class="lstOutter">
+        <h2>Traîtres:</h2>
+        <div class="lstOutter2">
+          <div class="lstBox">
+          </div>
+        </div>
+        <img src="/pub/valls.png" id="valls" alt="Valls"/>
+      </div>
+
+      <div class="tweetOutter">
+        <div class="tweetBox"></div>
+        <div class="shadow"></div>
+      </div>
+      
+      <div class="footer">
+        <a href="#" id="reset">reset</a> 
+        <span style="float:right">&copy; <a href="http://corpsmoderne.net" target="_blank">Marc Planard 2015</a> / <a href="https://twitter.com/corpsmoderne" target="_blank">@corpsmoderne</a> / <a id="attrib" href="#" >attributions</a> / <a href="https://twitter.com/corpsmoderne/status/590144549017747456" target="_blank">sources</a></span>
+        <div class="attrib">
+          <div>Photo Cazeneuve par Varmin (Own work) [<a href="http://creativecommons.org/licenses/by-sa/3.0">CC BY-SA 3.0</a>], <a href="http://commons.wikimedia.org/wiki/File%3ASalon_du_livre_2015_-_Cazeneuve_01.jpg">via Wikimedia Commons</a></div>
+          <div>Photo Valls par Zedka29 (Travail personnel) [<a href="http://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>], <a href="http://commons.wikimedia.org/wiki/File%3AValls.jpg">via Wikimedia Commons</a></div>
+          <div>Photo Hollande par Manuel Canevet (http://flickr.com/photos/mcanevet/240294251/) [<a href="http://creativecommons.org/licenses/by-sa/2.0">CC BY-SA 2.0</a>], <a href="http://commons.wikimedia.org/wiki/File%3AFran%C3%A7ois_Hollande.jpg">via Wikimedia Commons</a></div>
+          <div>Logo de <a target="_blank" href="http://ni-pigeons-ni-espions.fr/">http://ni-pigeons-ni-espions.fr/</a> utilisé avec l'aimable autorisation de <a href="https://twitter.com/nitot" target="_blank">@nitot</a></div>
+      </div>
+
+      <img id="cazeneuve" src="/pub/cazeneuve.png" alt="Cazeneuve"/>
+
+      <div class="pigeon">
+        <img id="pigeon1" src="/pub/pigeon1.png"/>
+        <img id="pigeon2" src="/pub/pigeon2.png"/>
+      </div>
+
+    </div>
+
+
+  </body>
+</html>
