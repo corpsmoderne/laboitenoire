@@ -84,7 +84,7 @@ app.get("/en*", function(req, res) {
 
 app.get("/getTweets", function(req, res) {
   var ip = req.connection.remoteAddress;
-  log("send", tweets.length ,"tweets from", ip);
+  log("send", tweets.length ,"tweets to", ip);
   var lst = [{ version: version }];
   res.send(JSON.stringify(lst.concat(tweets)));
 });
