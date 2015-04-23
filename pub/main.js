@@ -320,7 +320,7 @@ $(document).ready(function() {
     elem.append("<div style='clear:both;'></div>");
     
     elem.click(function() {
-      popup(j, txt);
+      popup(j, j.text);
     });
     
     var report = $(T.reportBtn);
