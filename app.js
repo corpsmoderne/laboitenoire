@@ -68,19 +68,19 @@ stream.on('tweet', function (tweet) {
 app.use("/pub", express.static(__dirname + '/pub'));
 
 app.get("/", function(req, res) {
-  log("get /", req.get("Referer"));
+  log("GET /", req.get("Referer"));
   //console.log("lang", req.headers["accept-language"]);
   res.sendfile('./pub/index.html');
 });
 
 app.get("/fr*", function(req, res) {
-  log("get /fr", req.get("Referer"));
+  log("GET /fr", req.get("Referer"));
   //console.log("lang:", req.headers["accept-language"]);
   res.sendfile('./pub/index.html');
 });
 
 app.get("/en*", function(req, res) {
-  log("get /en", req.get("Referer"));
+  log("GET /en", req.get("Referer"));
   //console.log("lang:", req.headers["accept-language"]);
   res.sendfile('./pub/index_en.html');
 });
