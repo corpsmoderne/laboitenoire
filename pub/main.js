@@ -120,7 +120,7 @@ function report_tweet(j) {
   $("#"+j.id_str).css("background", "red");
   $("#"+j.id_str).hide(250, function() {
     $("#"+j.id_str).remove();
-    document.title = "("+$(".msg").length+") La Boîte Noire";
+    document.title = Mustache.render(T.title, { nbr: $(".msg").length });
   });
 
 }
@@ -136,44 +136,37 @@ function update_player() {
     $("#level").html(getLevelStr());
     
     update_ui();
-    var elem = $("<div class='tweet' style='background:green;color: white;'>BRAVO PATRIOTE! TU PASSES AU NIVEAU D'ACCREDIATION SUPERIEUR: "+levels[player.level][0]+"</div>");
-
-    ws.send(JSON.stringify({ name:player.name, 
-                             pts:player.pts,
-                             level: player.level}));
-
-
-
+    var elem = $(Mustache.render(T.levelUp, { level:levels[player.level][0] }));
     $(".tweetBox").append(elem);
+    
+    if (ws && ws.send) {
+      ws.send(JSON.stringify({ name:player.name, 
+                               pts:player.pts,
+                               level: player.level}));
+    }
   }
 }
 
 function popup(j, txt) {
   $(".popup").remove();
-  var elem = $("<div class='popup'></div>");
-  var a = $("<a href="+j.url+" target='_blank'></a>");
-  elem.append("<a href='https://twitter.com/"+j.screen_name+"' target='_blank'><img src='"+j.img+"' alt='mugshot'/></a>");
-  elem.append("<span>"+j.name+" :</span>");
-  a.append(txt);
-  elem.append(a);
-  elem.append("<div style='clear:both;'></div>");
-  
-  elem.append("<hr/>");
+  var elem = $(Mustache.render(T.popup, 
+                               { urlTweet:j.url, 
+                                 urlProfile:"https://twitter.com/"+j.screen_name,
+                                 img: j.img,
+                                 name: j.name,
+                                 txt: txt }));
 
-  var close = $("<button style='float:right;'>Fermer</button>");
+  var close = elem.find(".closePopupBtn");
   close.click(function() {
     $(".popup").remove();
   });
 
-  var report = $("<button>Dénoncer</button>");
+  var report = elem.find(".reportPopupBtn");
   report.click(function() {
     report_tweet(j);
     $(".popup").remove();
   });
-  elem.append(report);
-  
-  elem.append(close);
-  
+
   $("body").append(elem);
 }
 
@@ -190,10 +183,15 @@ $(document).ready(function() {
   } else {
     $(".tutorial").hide();
     startWS();
+    checkFallback();
   }
 
+  var fallBack = false;
   var stopNet=false;
   function checkHidden() {
+    if (fallBack === true) {
+      return;
+    }
     if (document.hidden === true && stopNet === false) {
       console.log("checking in 10 s...");
       setTimeout(function() {
@@ -229,16 +227,16 @@ $(document).ready(function() {
   update_ui();
 
   $("#name").click(function() {
-    var name = prompt("Veuillez decliner votre identité:");
+    var name = prompt(T.getId);
     if (name.length == 0) {
-      alert("L'anonymat est intedit!");
+      alert(Mustache.render(T.noAnon));
       return;
     }
 
     for(var i=0; i < name.length; i++) {
       var l = name[i];
       if ("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-.0123456789".indexOf(l) === -1) {
-        alert("Nom interdit: caractères invalides");
+        alert(T.invalidName);
         return
       }
     }
@@ -249,7 +247,7 @@ $(document).ready(function() {
   });
 
   $("#reset").click(function() {
-    if (confirm("Recommencer de zéro?")) {
+    if (confirm(T.restart)) {
       delete localStorage['player'];
       document.location.reload();
     }
@@ -259,6 +257,7 @@ $(document).ready(function() {
     $(".tutorial").hide(1000);
     $(".tweetOutter").show(1000, function() {
       startWS();
+      checkFallback();
     });
   });
 
@@ -275,13 +274,85 @@ $(document).ready(function() {
   
   function share() {
     setTimeout(function() {
-      notice('<b>Partage ou tu es un traître!</b> <a href="http://www.twitter.com/share?url=http%3A%2F%2Flaboitenoire.corpsmoderne.net%2F" target="_blank">Twitter</a> <a href="http://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flaboitenoire.corpsmoderne.net%2F" target="_blank">Facebook</a>');
+      notice(T.shareOrTraitor);
       share();
     }, 60000+(Math.random()*3*60000));
   }
 
+  function onMessage(j) {    
+    if (j.version) {
+      if (version === undefined) {
+        version = j.version;
+      } else if (version != j.version) {
+        document.location.reload();
+      }
+      return;
+    }
+    
+    if (j.level !== undefined) { // player message
+      console.log(j);
+      notice(Mustache.render(T.userReport, {name:j.name, pts:j.pts, level:levels[j.level][0]}));
+      return;
+    }
+    
+    var txt = j.text;
+    if (player.level >= 3) {
+        keywords.forEach(function(kw) {
+          if (txt.indexOf(kw) != -1) {
+            var tbl = txt.split(kw);
+            txt = tbl.join("<span class='alert'>"+kw+"</span>");
+          }      
+        });
+    }
+    $(".waiter").hide(250, function() {
+      $(".waiter").remove();
+    });
+    
+    var elem = $("<div class='tweet msg'></div>");
+    
+    elem.append("<img src='"+j.img+"' alt='mugshot'/>");
+    elem.append("<span class='tname'>"+j.name+"</span> : ");
+    elem.append("<span>"+txt+"</span>");
+    
+    elem.append("<div style='clear:both;'></div>");
+    
+    elem.click(function() {
+      popup(j, txt);
+    });
+    
+    var report = $(T.reportBtn);
+    report.click(function() {
+      report_tweet(j);
+    });
+    if (player.level < 4) {
+      report.hide();
+    }
+    if (player.level < 2) {
+      elem.find("img").hide();
+    }
+    
+    var elem2 = $("<div style='position:relative;'></div>");
+    elem2.attr("id", j.id_str);
+    
+    elem2.append(elem);
+    elem2.append(report);
+    
+    elem2.hide();
+    $(".tweetBox").append(elem2);
+    elem2.show(250);
+    
+    if (player.level >= levels.length-1) {
+      report.hide();
+      setTimeout(function() {
+        report.click();
+      }, 500);
+    }
+    
+    document.title = Mustache.render(T.title, { nbr: $(".msg").length });
+  }
+
   function startWS() {
-    if (stopNet === true) {
+    if (stopNet === true || fallBack === true) {
       return;
     }
 
@@ -301,17 +372,20 @@ $(document).ready(function() {
         $(".waiter").remove();
       });
       
-      notice("<b>Ce navigateur est trop vieux pour dénoncer efficacement!</b> Essaye avec <a target='_blank' href='https://www.google.fr/chrome/browser/desktop/'>Chrome</a> ou <a target='_blank' href='https://www.mozilla.org/fr/firefox/new/'>Firefox</a>, les navigateurs des vrais patriotes!");
+      notice(T.broserTooOld);
       return;
     }
 
     ws.onclose = function(){
+      if (fallBack === true) {
+        return;
+      }
       if (stopNet === true) {
-        var elem = $("<div class='tweet alert-red'>DECONNEXION DU SERVEUR POUR INACTIVITE...</div>");
+        var elem = $(T.inactive);
         $(".tweetBox").append(elem);
       } else {
         console.log("connection closed by host.");
-        var elem = $("<div class='tweet alert-red'>DECONNEXION DU SERVEUR...RECONNEXION EN COURS...</div>");
+        var elem = $(T.conClosed);
         $(".tweetBox").append(elem);
         setTimeout(function() {
           startWS();
@@ -321,84 +395,12 @@ $(document).ready(function() {
     
     ws.onopen = function(event) {
       console.log("connected");
-      var elem = $("<div class='tweet alert-green'>CONNEXION AU SERVEUR DE SURVEILLANCE ETABLIE</div>");
-      $(".tweetBox").append(elem);
-      var elem2 = $("<div class='tweet waiter'>En attente de messages... <span class='loading'>|</span></div>");
-      $(".tweetBox").append(elem2);
+      $(".tweetBox").append(T.conEstablished);
+      $(".tweetBox").append(T.awaitingMsg);
     };
     
     ws.onmessage = function(event) {
-      var j = JSON.parse(event.data);
-
-      if (j.version) {
-        if (version === undefined) {
-          version = j.version;
-        } else {
-          document.location.reload();
-        }
-        return;
-      }
-
-      if (j.level !== undefined) { // player message
-        console.log(j);
-        notice("<b>"+j.name+"</b> à dénoncé "+j.pts+" traîtres et passe au niveau <b>"+levels[j.level][0]+"</b>.");
-        return;
-      }
-
-      var txt = j.text;
-      if (player.level >= 3) {
-        keywords.forEach(function(kw) {
-          if (txt.indexOf(kw) != -1) {
-            var tbl = txt.split(kw);
-            txt = tbl.join("<span class='alert'>"+kw+"</span>");
-          }      
-        });
-      }
-      $(".waiter").hide(250, function() {
-        $(".waiter").remove();
-      });
-
-      var elem = $("<div class='tweet msg'></div>");
-
-      elem.append("<img src='"+j.img+"' alt='mugshot'/>");
-      elem.append("<span class='tname'>"+j.name+"</span> : ");
-      elem.append("<span>"+txt+"</span>");
-
-      elem.append("<div style='clear:both;'></div>");
-      
-      elem.click(function() {
-        popup(j, txt);
-      });
-
-      var report = $("<button class='reportBtn'>Dénoncer</button>");
-      report.click(function() {
-        report_tweet(j);
-      });
-      if (player.level < 4) {
-        report.hide();
-      }
-      if (player.level < 2) {
-        elem.find("img").hide();
-      }
-
-      var elem2 = $("<div style='position:relative;'></div>");
-      elem2.attr("id", j.id_str);
-
-      elem2.append(elem);
-      elem2.append(report);
-
-      elem2.hide();
-      $(".tweetBox").append(elem2);
-      elem2.show(250);
-
-      if (player.level >= levels.length-1) {
-        report.hide();
-        setTimeout(function() {
-          report.click();
-        }, 500);
-      }
-      
-      document.title = "("+$(".msg").length+") La Boîte Noire";
+      onMessage(JSON.parse(event.data));
     }
   }
 
@@ -439,6 +441,35 @@ $(document).ready(function() {
                            pigeon();
                          });
   });
+
+  function checkFallback() {
+    setTimeout(function() {
+      if (version === undefined) {
+        console.log("WebSocket not working, fall back on AJAX...");
+        fallBack = true;
+        if (ws) {
+          ws.close();
+        }
+        getTweets();
+      }
+    }, 5000);
+  }
+
+  var tweets = [];
+  function getTweets() {
+    var tweet = tweets.shift();
+    if (tweet) {
+      onMessage(tweet);
+      setTimeout(getTweets, 3000*Math.random());
+    } else {
+      console.log("get tweets...");
+      $.getJSON("/getTweets", function(data) {
+        tweets = data;
+        getTweets();
+      });
+    }
+  }
+  
 });
 
 function pigeon() {

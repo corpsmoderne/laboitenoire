@@ -21,29 +21,41 @@ var T = new Twit({
 });
 
 var clients = [];
-
 var ips = {};
 
-var stream = T.stream('statuses/filter', 
-                      { track: [ '#PJLRenseignement', 
-				 "#LoiRenseignement",
-                                 'terrorisme',
-                                 'liberté',
-                                 'vie privé',
-                                 "droits de l'homme"]
-                      });
+var tweets = [];
+
+try {
+  var stream = T.stream('statuses/filter', 
+                        { track: [ '#PJLRenseignement', 
+				   "#LoiRenseignement",
+                                   'terrorisme',
+                                   'liberté',
+                                   'vie privé',
+                                   "droits de l'homme"]
+                        });
+} catch(e) {
+  console.log("Unable to connect to twitter", e);
+}
 
 stream.on('tweet', function (tweet) {
-  //console.log(tweet);
+
+  var j = {
+    name:tweet.user.name,
+    screen_name: tweet.user.screen_name,
+    text:tweet.text,
+    id_str: tweet.id_str,
+    img: tweet.user.profile_image_url,
+    url: "https://twitter.com/"+tweet.user.screen_name+"/status/"+tweet.id_str};
+  
+  tweets.push(j);
+  if (tweets.length > 20) {
+    tweets.shift();
+  }
+
+  var data = JSON.stringify(j);
 
   clients.forEach(function(client) {
-    var data = JSON.stringify({ 
-      name:tweet.user.name,
-      screen_name: tweet.user.screen_name,
-      text:tweet.text,
-      id_str: tweet.id_str,
-      img: tweet.user.profile_image_url,
-      url: "https://twitter.com/"+tweet.user.screen_name+"/status/"+tweet.id_str});
     try {
       client.send(data);
     } catch(e) {
@@ -55,8 +67,26 @@ stream.on('tweet', function (tweet) {
 app.use("/pub", express.static(__dirname + '/pub'));
 
 app.get("/", function(req, res) {
+  console.log(req.headers["accept-language"]);
   res.sendfile('./pub/index.html');
 });
+
+app.get("/fr*", function(req, res) {
+  console.log(req.headers["accept-language"]);
+  res.sendfile('./pub/index.html');
+});
+
+app.get("/en*", function(req, res) {
+  console.log(req.headers["accept-language"]);
+  res.sendfile('./pub/index.html');
+});
+
+app.get("/getTweets", function(req, res) {
+  var lst = [{ version: version }];
+  res.send(JSON.stringify(lst.concat(tweets)));
+});
+
+
 
 if (process.getuid() !== 0) {
   S.PORT *= 100;
