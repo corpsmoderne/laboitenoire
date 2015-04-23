@@ -89,6 +89,13 @@ app.get("/getTweets", function(req, res) {
   res.send(JSON.stringify(lst.concat(tweets)));
 });
 
+app.get("/setLevel/(:name)/(:pts)/(:level)", function(req, res) {
+  onMessage({ name:req.params.name, 
+              pts:req.params.pts, 
+              level:req.params.level});
+  res.send(JSON.stringify({ result: "ok"}));
+});
+
 if (process.getuid() !== 0) {
   S.PORT *= 100;
   S.IP = "";
@@ -113,6 +120,34 @@ function log() {
     txt += arguments[e] + " ";
   }
   console.log(txt);
+}
+
+function onMessage(j, client) {
+  for(var i=0; i < j.name.length; i++) {
+    var l = j.name[i];
+    if ("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-.0123456789".indexOf(l) === -1) {
+      console.log("name invalid");
+      return
+    }
+  }
+  
+  tweets.push(j);
+  if (tweets.length > 20) {
+    tweets.shift();
+  }
+
+  var data = JSON.stringify(j);  
+  log(data);
+  clients.forEach(function(c) {
+    if (c !== client) {
+      try {
+        c.send(data);
+      } catch(e) {
+        console.log(e);
+      }
+    }
+  });
+  
 }
 
 var wss = new ws.Server({server: server});
@@ -141,30 +176,7 @@ wss.on('connection', function(client) {
   
   client.on("message", function(data) {
     var j = JSON.parse(data);
-
-    for(var i=0; i < j.name.length; i++) {
-      var l = j.name[i];
-      if ("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-.0123456789".indexOf(l) === -1) {
-        console.log("name invalid");
-        return
-      }
-    }
-
-    tweets.push(j);
-    if (tweets.length > 20) {
-      tweets.shift();
-    }
-
-    log(data);
-    clients.forEach(function(c) {
-      if (c !== client) {
-        try {
-          c.send(data);
-        } catch(e) {
-          console.log(e);
-        }
-      }
-    });
+    onMessage(j, client);
   });
 
   client.on("close", function() {
