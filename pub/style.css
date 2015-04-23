@@ -23,6 +23,13 @@ h1 {
     text-align: right;
 }
 
+.lang {
+    position: absolute;
+    bottom: 1em;
+    right: 1em;
+    font-size: x-small;
+}
+
 .tweetOutter {
     border: thin solid black;
     height: 100px;
@@ -130,6 +137,7 @@ h1 {
 }
 
 .player {
+    position: relative;
     border: thin solid black;
     padding: 1em;
     margin-bottom: 1em;
